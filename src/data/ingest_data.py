@@ -22,16 +22,19 @@ def ingest_data():
     descarga debe realizarse usando únicamente funciones de Python.
 
     """
-import pandas as pd
-import wget
 import os
+import requests
 
-link = "https://github.com/jdvelasq/datalabs/blob/master/datasets/precio_bolsa_nacional/xls"
-os.chdir('data_lake/landing')
-for yearnum in range (1995,2021):
-    wdir = link + "/" + format(yearnum) + ".xlsx"
-    pd.read_excel(wget.download(wdir))
-os.chdir('../../')
+for yearnum in range (1995,2022):
+    if yearnum == 2016 or yearnum == 2017:
+        link_descarga = 'https://github.com/jdvelasq/datalabs/blob/master/datasets/precio_bolsa_nacional/xls/{}.xls?raw=true'.format(yearnum)
+        descarga = requests.get(link_descarga, allow_redirects= True)
+        open ('data_lake/landing/{}.xls'.format(yearnum), 'wb').write(descarga.content)
+
+    else:
+        link_descarga = 'https://github.com/jdvelasq/datalabs/blob/master/datasets/precio_bolsa_nacional/xls/{}.xlsx?raw=true'.format(yearnum)
+        descarga = requests.get(link_descarga, allow_redirects= True)
+        open ('data_lake/landing/{}.xlsx'.format(yearnum), 'wb').write(descarga.content)
 
 if __name__ == "__main__":
     import doctest
