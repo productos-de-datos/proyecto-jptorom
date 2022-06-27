@@ -37,7 +37,6 @@ def create_data_lake():
     ]
     
     import os
-    import sys
     import shutil
 
     #En caso de existir un directorio llamado data_lake al correr, lo elimina.
