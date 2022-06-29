@@ -9,7 +9,6 @@ def transform_data():
     """
     raise NotImplementedError("Implementar esta función")
 
-from asyncore import read
 from email import header
 import pandas as pd
 
