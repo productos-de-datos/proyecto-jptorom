@@ -7,7 +7,6 @@ def transform_data():
     H23.
 
     """
-    raise NotImplementedError("Implementar esta función")
 
 from openpyxl import Workbook
 from email import header
