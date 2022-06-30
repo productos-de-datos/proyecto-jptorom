@@ -12,11 +12,76 @@ En luigi llame las funciones que ya creo.
 
 """
 
-if __name__ == "__main__":
+import os
+from luigi import Task, LocalTarget
+import luigi
+from create_data_lake import create_data_lake
+from ingest_data import ingest_data
+from transform_data import transform_data
+from clean_data import clean_data
+from compute_monthly_prices import compute_monthly_prices
+from compute_daily_prices import compute_daily_prices
+import pandas as pd
 
-    raise NotImplementedError("Implementar esta función")
+if __name__ == "__main__":
+    class CargueDatos(Task):
+      
+        def output(self):
+            return luigi.LocalTarget('data_lake/landing/2000.txt')
+
+        def run(self):
+            with self.output().open("w") as outfile:
+                ingest_data()
+
+    class TransformaciónDatos(Task):
+
+        def requires(self):
+            return CargueDatos()
+   
+        def output(self):
+            return luigi.LocalTarget('data_lake/raw/2000.txt')
+
+        def run(self):
+            with self.output().open("w") as outfile:
+                transform_data()
+
+    class TablaPrecioDia(Task):
+        def requires(self):
+            return TransformaciónDatos()
+
+        def output(self):
+            return luigi.LocalTarget('data_lake/cleansed/2000.txt')
+
+        def run(self):
+            with self.output().open("w") as outfile:
+                clean_data()
+
+    class PrecioAvgDiario(Task):
+        def requires(self):
+            return TablaPrecioDia()
+
+        def output(self):
+            return luigi.LocalTarget('data_lake/business/2000.txt')
+
+        def run(self):
+            with self.output().open("w") as outfile:
+                compute_daily_prices()
+
+    class PrecioAvgMensual(Task):
+
+        def output(self):
+            return luigi.LocalTarget('data_lake/business/2000.txt')
+
+        def run(self):
+            with self.output().open("w") as outfile:
+                compute_monthly_prices()
+    
+    class Corrida(Task):
+        def requires(self):
+            return [ PrecioAvgDiario(), PrecioAvgMensual()]
+    #raise NotImplementedError("Implementar esta función")
 
 if __name__ == "__main__":
     import doctest
-
+    luigi.run(["Corrida", "--local-scheduler"])
     doctest.testmod()
