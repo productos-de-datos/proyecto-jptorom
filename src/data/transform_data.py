@@ -8,21 +8,27 @@ def transform_data():
 
     """
 
-from openpyxl import Workbook
-from email import header
 import pandas as pd
 
 for yearnum in range (1995,2022):
-    if yearnum == 2016 or yearnum == 2017:
+    if yearnum == 2016  or yearnum == 2017:
         read_file = pd.read_excel('data_lake/landing/{}.xls'.format(yearnum),index_col=None, header = None)
         # Se eliminan columnas sobrantes
         df = read_file.iloc[:,:25]
+        # Se eliminan filas que no tienen información
         df = df.dropna(how = "any")
-        df.to_csv('data_lake/raw/{}.csv'.format(yearnum), index_label= False, index = False, header = None)    
-    else:
+        df.to_csv('data_lake/raw/{}.csv'.format(yearnum), index_label= False, index = False, header = None)  
+    if yearnum in range (2018,2022):
+        read_file = pd.read_excel('data_lake/landing/{}.xlsx'.format(yearnum),index_col=None, header = None)
+        # Se eliminan columnas sobrantes
+        df = read_file.iloc[:,:25]
+        df.to_csv('data_lake/raw/{}.csv'.format(yearnum), index_label= False, index = False, header = None)  
+
+    if yearnum in range (1995,2016):
         read_file = pd.read_excel('data_lake/landing/{}.xlsx'.format(yearnum),index_col=None)
         # Se eliminan columnas sobrantes
         df = read_file.iloc[:,:25]
+        # Se eliminan filas que no tienen información
         df = df.dropna(how = "any")
         df.to_csv('data_lake/raw/{}.csv'.format(yearnum), index_label= False, index = False, header = None)     
 
