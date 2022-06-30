@@ -12,10 +12,16 @@ def compute_daily_prices():
 
 
     """
-    raise NotImplementedError("Implementar esta función")
-
+    #raise NotImplementedError("Implementar esta función")
+    import pandas as pd
+    
+    readfile = pd.read_csv('data_lake/cleansed/precios-horarios.csv')
+    readfile = readfile[["Fecha","precio"]]
+    readfile.groupby(["Fecha"])["precio"].mean()
+    readfile.to_csv('data_lake/business/precios-diarios.csv',index=False)
 
 if __name__ == "__main__":
     import doctest
 
     doctest.testmod()
+    compute_daily_prices()
