@@ -1,3 +1,4 @@
+from logging.handlers import DatagramHandler
 from pandas import DataFrame
 
 
@@ -27,11 +28,19 @@ def clean_data():
 
     #Se combinan los archivos
     df = pd.concat(map(pd.read_csv, list_files), ignore_index=True)
+    # Se ajusta el formato de la fecha
+    df["Fecha"] = pd.to_datetime(df["Fecha"], format="%Y/%m/%d")
     # Se elimina el pivote de la Fecha
     dataframe2 = pd.melt(df, id_vars=["Fecha"], value_vars = df.columns[1:], var_name= "hora", value_name= "precio")
-    dataframe2.to_csv('data_lake/cleansed/precios-horarios.csv',index=False)
+    # Se elimina la letra H en la columna hora
+    dataframe2["hora"] = dataframe2["hora"].replace({'H':''}, regex=True)
+    # Se ajusta el formato de la columna hora
+    dataframe2["hora"] = pd.to_numeric(dataframe2["hora"])
+    # Se convierte la tabla en formato csv y se guarda en la carpeta cleansed del datalake
+    dataframe2.to_csv('data_lake/cleansed/precios-horarios4.csv',index=False)
+    
     #raise NotImplementedError("Implementar esta función")
-
+    return dataframe2
 
 if __name__ == "__main__":
     import doctest
