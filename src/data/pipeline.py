@@ -27,7 +27,7 @@ if __name__ == "__main__":
     class CargueDatos(Task):
       
         def output(self):
-            return luigi.LocalTarget('data_lake/landing/2000.txt')
+            return luigi.LocalTarget('data_lake/landing/arc.csv')
 
         def run(self):
             with self.output().open("w") as outfile:
@@ -39,7 +39,7 @@ if __name__ == "__main__":
             return CargueDatos()
    
         def output(self):
-            return luigi.LocalTarget('data_lake/raw/2000.txt')
+            return luigi.LocalTarget('data_lake/raw/arc.txt')
 
         def run(self):
             with self.output().open("w") as outfile:
@@ -50,7 +50,7 @@ if __name__ == "__main__":
             return TransformaciónDatos()
 
         def output(self):
-            return luigi.LocalTarget('data_lake/cleansed/2000.txt')
+            return luigi.LocalTarget('data_lake/cleansed/arc.txt')
 
         def run(self):
             with self.output().open("w") as outfile:
@@ -61,7 +61,7 @@ if __name__ == "__main__":
             return TablaPrecioDia()
 
         def output(self):
-            return luigi.LocalTarget('data_lake/business/2000.txt')
+            return luigi.LocalTarget('data_lake/business/arc.txt')
 
         def run(self):
             with self.output().open("w") as outfile:
@@ -70,18 +70,15 @@ if __name__ == "__main__":
     class PrecioAvgMensual(Task):
 
         def output(self):
-            return luigi.LocalTarget('data_lake/business/2000.txt')
+            return luigi.LocalTarget('data_lake/business/arc.txt')
 
         def run(self):
             with self.output().open("w") as outfile:
                 compute_monthly_prices()
     
-    class Corrida(Task):
-        def requires(self):
-            return [ PrecioAvgDiario(), PrecioAvgMensual()]
     #raise NotImplementedError("Implementar esta función")
 
 if __name__ == "__main__":
     import doctest
-    luigi.run(["Corrida", "--local-scheduler"])
+    luigi.run(["PrecioAvgMensual", "--local-scheduler"])
     doctest.testmod()
