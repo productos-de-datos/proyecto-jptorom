@@ -14,23 +14,17 @@ import pandas as pd
 
 for yearnum in range (1995,2022):
     if yearnum == 2016 or yearnum == 2017:
-        read_file = pd.read_excel('data_lake/landing/{}.xls'.format(yearnum),header = None)
-        # Mantenga solo las filas con al menos 20 valores que no sean NA
-        df = read_file.dropna(axis =0, thresh= 20)
-        # Omitir la primera fila
-        df = df.iloc[1:]
-        # Establecer la primer columna como formato fecha
-        df[0] = pd.to_datetime(df[0], format="%Y/%m/%d")
-        df.to_csv('data_lake/raw/{}.csv'.format(yearnum),encoding='utf-8', index= False, header = True)
+        read_file = pd.read_excel('data_lake/landing/{}.xls'.format(yearnum),index_col=None, header = None)
+        # Se eliminan columnas sobrantes
+        df = read_file.iloc[:,:25]
+        df = df.dropna(how = "any")
+        df.to_csv('data_lake/raw/{}.csv'.format(yearnum), index_label= False, index = False, header = None)    
     else:
-        read_file = pd.read_excel('data_lake/landing/{}.xlsx'.format(yearnum),header = None)
-        # Mantenga solo las filas con al menos 20 valores que no sean NA
-        df = read_file.dropna(axis =0, thresh= 20)
-        # Omitir la primera fila
-        df = df.iloc[1:]
-        # Establecer la primer columna como formato fecha
-        df[0] = pd.to_datetime(df[0], format="%Y/%m/%d")
-        df.to_csv('data_lake/raw/{}.csv'.format(yearnum),encoding='utf-8', index= False, header = True)     
+        read_file = pd.read_excel('data_lake/landing/{}.xlsx'.format(yearnum),index_col=None)
+        # Se eliminan columnas sobrantes
+        df = read_file.iloc[:,:25]
+        df = df.dropna(how = "any")
+        df.to_csv('data_lake/raw/{}.csv'.format(yearnum), index_label= False, index = False, header = None)     
 
 if __name__ == "__main__":
     import doctest
