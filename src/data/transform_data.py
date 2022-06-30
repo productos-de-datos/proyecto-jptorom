@@ -40,6 +40,5 @@ for yearnum in range (1995,2022):
 
 if __name__ == "__main__":
     import doctest
-
     doctest.testmod()
     transform_data()
