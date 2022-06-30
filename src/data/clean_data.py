@@ -37,7 +37,7 @@ def clean_data():
     # Se ajusta el formato de la columna hora
     dataframe2["hora"] = pd.to_numeric(dataframe2["hora"])
     # Se convierte la tabla en formato csv y se guarda en la carpeta cleansed del datalake
-    dataframe2.to_csv('data_lake/cleansed/precios-horarios4.csv',index=False)
+    dataframe2.to_csv('data_lake/cleansed/precios-horarios.csv',index=False)
     
     #raise NotImplementedError("Implementar esta función")
     return dataframe2
