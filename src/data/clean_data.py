@@ -1,3 +1,6 @@
+from pandas import DataFrame
+
+
 def clean_data():
     """Realice la limpieza y transformación de los archivos CSV.
 
@@ -12,10 +15,31 @@ def clean_data():
 
 
     """
-    raise NotImplementedError("Implementar esta función")
+    import pandas as pd
+    import os
+    import glob
+
+    #Se coloca la ruta en la que se encuentran los archivos
+    files_joined = os.path.join('data_lake/raw/', "*.csv")
+
+    #Se genera una lista con todos los archivos
+    list_files = glob.glob(files_joined)
+
+    #Se combinan los archivos
+    df = pd.concat(map(pd.read_csv, list_files), ignore_index=True)
+    # Se ajusta el formato de la fecha
+    df["Fecha"] =  pd.to_datetime(df['Fecha'], format="%Y/%m/%d")
+    # Se elimina el pivote de la Fecha
+    dataframe2 = pd.melt(df, id_vars=["Fecha"], value_vars = df.columns[1:], var_name= "hora", value_name= "precio")
+    dataframe2.to_csv('data_lake/cleansed/precios-horarios.csv',index=False)
+
+
+
+    #raise NotImplementedError("Implementar esta función")
 
 
 if __name__ == "__main__":
     import doctest
 
     doctest.testmod()
+    clean_data()
