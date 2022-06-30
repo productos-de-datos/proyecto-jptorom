@@ -27,14 +27,9 @@ def clean_data():
 
     #Se combinan los archivos
     df = pd.concat(map(pd.read_csv, list_files), ignore_index=True)
-    # Se ajusta el formato de la fecha
-    df["Fecha"] =  pd.to_datetime(df['Fecha'], format="%Y/%m/%d")
     # Se elimina el pivote de la Fecha
     dataframe2 = pd.melt(df, id_vars=["Fecha"], value_vars = df.columns[1:], var_name= "hora", value_name= "precio")
     dataframe2.to_csv('data_lake/cleansed/precios-horarios.csv',index=False)
-
-
-
     #raise NotImplementedError("Implementar esta función")
 
 
@@ -43,3 +38,4 @@ if __name__ == "__main__":
 
     doctest.testmod()
     clean_data()
+
