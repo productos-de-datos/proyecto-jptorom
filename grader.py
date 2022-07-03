@@ -119,9 +119,7 @@ def test_08():
 
 def test_09():
     """Evalua figura precios diarios"""
-    assert (
-        os.path.isfile("data_lake/business/reports/figures/monthly_prices.png") is True
-    )
+    assert os.path.isfile("data_lake/business/reports/figures/monthly_prices.png") is True
 
 
 def test_10():
