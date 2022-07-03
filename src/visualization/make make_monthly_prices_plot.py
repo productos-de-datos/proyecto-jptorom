@@ -41,3 +41,5 @@ if __name__ == "__main__":
 
     doctest.testmod()
     make_monthly_prices_plot()
+
+   
