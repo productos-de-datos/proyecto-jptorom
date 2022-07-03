@@ -1,45 +1,29 @@
-from pandas import to_datetime
-import os
-
 def make_daily_prices_plot():
     """Crea un grafico de lines que representa los precios promedios diarios.
-
     Usando el archivo data_lake/business/precios-diarios.csv, crea un grafico de
     lines que representa los precios promedios diarios.
-
     El archivo se debe salvar en formato PNG en data_lake/business/reports/figures/daily_prices.png.
-
     """
-    #raise NotImplementedError("Implementar esta función")
+    # raise NotImplementedError("Implementar esta función")
 
-
-if __name__ == "__main__":
-    import doctest
     import pandas as pd
     import matplotlib.pyplot as plt
-    import numpy as np
 
-    # Se obtienen los datos
-    datos = pd.read_csv("data_lake/business/precios-diarios.csv", header= 0)
-    #Se ajusta el formato del campo Fecha
-    datos['Fecha'] = pd.to_datetime(datos['Fecha'], format='%Y-%m-%d')
-    # Se asignan a valores a los ejes
-    x_values= datos["Fecha"]
-    y_values = datos["precio"]
+    precios_diarios = pd.read_csv('data_lake/business/precios-diarios.csv')
+    precios_diarios['Fecha'] = pd.to_datetime(precios_diarios["Fecha"])
+
+    x = precios_diarios['Fecha']
+    y = precios_diarios['precio']
 
     plt.figure(figsize=(14, 4)) 
-    plt.plot(x_values,y_values,"g")
-    plt.ylabel("Precio")
-    plt.xlabel("Fecha")
-    plt.title("Precio Promedio Diario de Energía")
-    plt.savefig("data_lake/business/reports/figures/daily_prices.png")
+    plt.plot(x, y, label='Precio Promedio Diario',"g") 
+    plt.title('Precio Promedio Diario') 
+    plt.xlabel('Fecha') 
+    plt.ylabel('Precio')
+    plt.savefig("data_lake/business/reports/figures/daily_prices.png") 
 
-
-def test_09():
-    assert os.path.isfile('data_lake/business/reports/figures/daily_prices.png') is True
-
-    #doctest.testmod()
 if __name__ == "__main__":
     import doctest
+    
     doctest.testmod()
     make_daily_prices_plot()
