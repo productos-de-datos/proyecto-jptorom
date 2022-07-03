@@ -36,9 +36,6 @@ if __name__ == "__main__":
     plt.savefig("data_lake/business/reports/figures/daily_prices.png")
 
 
-def test_09():
-    assert os.path.isfile('data_lake/business/reports/figures/daily_prices.png') is True
-
     #doctest.testmod()
 if __name__ == "__main__":
     import doctest
