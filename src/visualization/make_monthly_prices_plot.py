@@ -23,7 +23,7 @@ if __name__ == "__main__":
     # Se obtienen los datos
     datos = pd.read_csv("data_lake/business/precios-mensuales.csv", header= 0)
     #Se ajusta el formato del campo Fecha
-    datos["Fecha"] = pd.to_datetime(datos["Fecha"])
+    datos['Fecha'] = pd.to_datetime(datos['Fecha'], format='%Y-%m-%d')
     # Se asignan a valores a los ejes
     x_values= datos["Fecha"]
     y_values = datos["precio"]
