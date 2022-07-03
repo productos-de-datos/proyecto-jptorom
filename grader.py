@@ -127,6 +127,7 @@ def test_09():
         os.path.isfile("data_lake/business/reports/figures/monthly_prices.png") is True
     )
 
+
 def test_10():
     """Evalua la creación de características para modelos"""
     os.system("make make_features")
@@ -136,7 +137,7 @@ def test_10():
 def test_11():
     """Modelo creado"""
     os.system("make train_model")
-    assert os.path.isfile("src/models/precios-diarios.pkl") is True
+    assert os.path.isfile("modeles/precios-diarios.pkl") is True
 
 
 def test_12():
