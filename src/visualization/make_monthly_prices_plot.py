@@ -28,7 +28,8 @@ if __name__ == "__main__":
     x_values= datos["Fecha"]
     y_values = datos["precio"]
 
-    grafico = plt.plot(x_values,y_values,"g")
+    plt.figure(figsize=(14, 4)) 
+    plt.plot(x_values,y_values,"g")
     plt.ylabel("Precio")
     plt.xlabel("Fecha")
     plt.title("Precio Promedio Mensual de Energía")
