@@ -34,6 +34,9 @@ if __name__ == "__main__":
     plt.xlabel("Fecha")
     plt.title("Precio Promedio Mensual de Energía")
     plt.savefig("data_lake/business/reports/figures/monthly_prices.png")
+    
+    def test_09():
+    assert os.path.isfile('data_lake/business/reports/figures/monthly_prices.png') is True
 
     #doctest.testmod()
 if __name__ == "__main__":
