@@ -118,9 +118,12 @@ def test_08():
 
 
 def test_09():
+    """Realiza grafica precios promedios mensuales"""
+    os.system("make make_monthly_prices_plot")
     """Evalua figura precios diarios"""
-    assert os.path.isfile("data_lake/business/reports/figures/monthly_prices.png") is True
-
+    assert (
+        os.path.isfile("data_lake/business/reports/figures/monthly_prices.png") is True
+    )
 
 def test_10():
     """Evalua la creación de características para modelos"""
