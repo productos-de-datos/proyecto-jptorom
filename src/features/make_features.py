@@ -30,7 +30,7 @@ def make_features():
     #raise NotImplementedError("Implementar esta función")
     import pandas as pd
 
-    datos = pd.read_csv('data_lake/business/precios-diarios.csv', index_col=None, header=0)
+    datos = pd.read_csv('data_lake/business/precios-diarios.csv', index_col=0)
     datos.to_csv('data_lake/business/features/precios_diarios.csv', index=True)
     
  def test_11():
