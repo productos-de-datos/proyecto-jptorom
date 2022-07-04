@@ -1,4 +1,4 @@
-import os
+import pandas as pd
 def make_features():
     """Prepara datos para pronóstico.
 
@@ -14,9 +14,9 @@ def make_features():
 
     """
     #raise NotImplementedError("Implementar esta función")
-    import pandas as pd
-
+    '''Se cargan los datos en formato csv'''
     datos = pd.read_csv('data_lake/business/precios-diarios.csv', index_col=0)
+    '''Dado que solo contamos con dos columnas no se realizan transformaciones'''
     datos.to_csv('data_lake/business/features/precios-diarios.csv', index=True)
 
 if __name__ == "__main__":
