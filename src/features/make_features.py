@@ -31,8 +31,7 @@ def make_features():
     import pandas as pd
 
     datos = pd.read_csv('data_lake/business/precios-diarios.csv', index_col=None, header=0)
-    datos['Fecha'] = pd.to_datetime(datos['Fecha'], format='%Y-%m-%d')
-    datos.to_csv('data_lake/business/features/precios_diarios.csv', index=None)
+    datos.to_csv('data_lake/business/features/precios_diarios.csv', index=True)
     
  def test_11():
     assert os.path.isfile('data_lake/business/features/precios-diarios.csv') is True
