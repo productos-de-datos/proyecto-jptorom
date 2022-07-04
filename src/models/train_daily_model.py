@@ -1,38 +1,39 @@
-from pandas import read_csv
+import pandas as pd
+import numpy as np
+import matplotlib.pylab as plt
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.neural_network import MLPRegressor
 import pickle
-
 def train_daily_model():
     """Entrena el modelo de pronóstico de precios diarios.
-
     Con las features entrene el modelo de proóstico de precios diarios y
     salvelo en models/precios-diarios.pkl
-
-
     """
     #raise NotImplementedError("Implementar esta función")
-    import pandas as pd
-    from sklearn.model_selection import train_test_split
-    import numpy as np
-    from sklearn.preprocessing import MinMaxScaler
-    from sklearn.neural_network import MLPRegressor
-    from sklearn.model_selection import train_test_split
+    datos= pd.read_csv('data_lake/business/features/precios-diarios.csv',index_col = None, header= 0)
     
-
-
-    datos = pd.read_csv("data_lake/business/features/precios-diarios.csv", header= 0)
-    datos['Fecha'] = pd.to_datetime(datos['Fecha'], format='%Y-%m-%d')
-    datos['weekday'] = pd.to_numeric(datos["Fecha"].dt.weekday)
-    x_values= datos["weekday"]
-    y_values = datos["precio"]
-    x_values= np.array(x_values).reshape(-1, 1)
+    # Se ajusta el formato de la columna fecha
+    datos["Fecha"] = pd.to_datetime(datos["Fecha"], format= '%Y/%m/%d')
     
-    # Se asignan a valores a los ejes
-    X_values= datos["Fecha"]
-    X_values = np.array(X_values).reshape(-1,1)
-    y_values = datos["precio"]
+    # Se establece la columna fecha como indice para poder hacer uso de las funcionalidades de pandas
+    datos = datos.set_index("Fecha")
+    datos = datos.sort_index()
 
+    #Serie escalada entre 0 y 1
+    scaler = MinMaxScaler()
+    data_scaled = scaler.fit_transform(np.array(datos).reshape(-1,1))
+    data_scaled = [u[0] for u in data_scaled] #Lista de listas porque es lo que espera sklearn
+
+    #Preparación de los datos
+    P=13 # Cantidad de retardos que miramos hacía atrás
+    X=[] #lista vacia en la cual se agrega comprenhension. Dataframe que usamos para entrenamiento y validación
+    for t in range(P-1,9409-1):  # Se recorre el indice de los datos
+        X.append([data_scaled[t-n]for n in range(P)])
+    observed_scaled = data_scaled[P:]
+
+    # Tenemos 9396 patrones para entrenamiento
     np.random.seed =(123456)
-    H = 2 #Se escoge arbitrariamente
+    H = 1 #Se escoge arbitrariamente, número de neuronas en la capa oculta.
 
     mlp = MLPRegressor(
         hidden_layer_sizes=(H,),
@@ -43,21 +44,9 @@ def train_daily_model():
         max_iter=10000, #Realizar diez mil iteraciones
         )
 
-# Se parten los datos en dos conjuntos de datos: train y test. Se utiliza el 20% de los datos paras testing.
-    X_train, X_test, y_train , y_test = train_test_split(
-        x_values,
-        y_values,
-        train_size = 0.8,
-        test_size= 0.2,
-        random_state = 12345
-        )
+    mlp.fit(X[0:7057],observed_scaled[0:7057]) #9409-2352=7057
 
-    mlp.fit(X_train,y_train)
-
-    with open("src/models/precios-diarios.pkl", "wb") as f:
-        pickle.dump(mlp, f)
-    
-
+    pickle.dump(mlp, open('src/models/precios-diarios.pkl', 'wb'))
 
 if __name__ == "__main__":
     import doctest
