@@ -54,7 +54,7 @@ def train_daily_model():
 
     mlp.fit(X_train,y_train)
 
-    with open("proyecto-jptorom/src/models/precios-diarios.pkl", "wb") as f:
+    with open("src/models/precios-diarios.pkl", "wb") as f:
         pickle.dump(mlp, f)
     
 
