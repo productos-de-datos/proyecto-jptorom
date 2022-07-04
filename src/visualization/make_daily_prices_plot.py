@@ -29,12 +29,15 @@ if __name__ == "__main__":
     y_values = datos["precio"]
 
     plt.figure(figsize=(14, 4)) 
-    plt.plot(x_values,y_values)
+    plt.plot(x_values,y_values,"g")
     plt.ylabel("Precio")
     plt.xlabel("Fecha")
     plt.title("Precio Promedio Diario de Energía")
     plt.savefig("data_lake/business/reports/figures/daily_prices.png")
 
+
+def test_09():
+    assert os.path.isfile('data_lake/business/reports/figures/daily_prices.png') is True
 
     #doctest.testmod()
 if __name__ == "__main__":
