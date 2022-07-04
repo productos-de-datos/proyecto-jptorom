@@ -20,7 +20,7 @@ def make_features():
     datos.to_csv('data_lake/business/features/precios_diarios.csv', index=True)
     
  def test_11():
-    assert os.path.isfile('data_lake/business/features/precios-diarios.csv') is True
+    assert os.path.isfile('data_lake/business/features/precios_diarios.csv') is True
 
 if __name__ == "__main__":
     import doctest
