@@ -43,9 +43,15 @@ def clean_data():
     #raise NotImplementedError("Implementar esta función")
     return dataframe2
 
+# Tests
 def test_file():
     import os
     assert os.path.isfile('data_lake/cleansed/precios-horarios.csv') is True
+
+def test_column_number():
+    import pandas as pd
+    precios_horarios = pd.read_csv('data_lake/cleansed/precios-horarios.csv')
+    assert 3 == len(precios_horarios.columns)
 
 if __name__ == "__main__":
     import doctest
