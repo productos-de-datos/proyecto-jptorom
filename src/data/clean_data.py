@@ -36,9 +36,10 @@ def clean_data():
     dataframe2["hora"] = dataframe2["hora"].replace({'H':''}, regex=True)
     # Se ajusta el formato de la columna hora
     dataframe2["hora"] = pd.to_numeric(dataframe2["hora"])
+    # Dado que se identificaron registros duplicados, se procede a eliminarlos
+    dataframe2= dataframe2.drop_duplicates()
     # Se convierte la tabla en formato csv y se guarda en la carpeta cleansed del datalake
     dataframe2.to_csv('data_lake/cleansed/precios-horarios.csv',index=False)
-    
     #raise NotImplementedError("Implementar esta función")
     return dataframe2
 
@@ -47,4 +48,3 @@ if __name__ == "__main__":
 
     doctest.testmod()
     clean_data()
-
