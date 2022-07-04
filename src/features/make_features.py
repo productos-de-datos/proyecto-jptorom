@@ -18,9 +18,6 @@ def make_features():
 
     datos = pd.read_csv('data_lake/business/precios-diarios.csv', index_col=0)
     datos.to_csv('data_lake/business/features/precios-diarios.csv', index=True)
-    
- def test_11():
-    assert os.path.isfile('data_lake/business/features/precios-diarios.csv') is True
 
 if __name__ == "__main__":
     import doctest
