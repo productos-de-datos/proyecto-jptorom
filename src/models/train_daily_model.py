@@ -1,10 +1,6 @@
 from pandas import read_csv
 import pickle
 
-def save_model(mlp):
-    with open('src/models/precios-diarios.pkl', 'wb') as f:
-        pickle.dump(mlp,f,pickle.HIGHEST_PROTOCOL)
-
 def train_daily_model():
     """Entrena el modelo de pronóstico de precios diarios.
 
@@ -23,7 +19,7 @@ def train_daily_model():
     
 
 
-    datos = pd.read_csv("data_lake/business/features/precios_diarios.csv", header= 0)
+    datos = pd.read_csv("data_lake/business/features/precios-diarios.csv", header= 0)
     datos['Fecha'] = pd.to_datetime(datos['Fecha'], format='%Y-%m-%d')
     datos['weekday'] = pd.to_numeric(datos["Fecha"].dt.weekday)
     x_values= datos["weekday"]
@@ -58,7 +54,8 @@ def train_daily_model():
 
     mlp.fit(X_train,y_train)
 
-    save_model(mlp)
+    with open("proyecto-jptorom/src/models/dataprecios-diarios.pkl", "wb") as f:
+        pickle.dump(mlp, f)
     
 
 
