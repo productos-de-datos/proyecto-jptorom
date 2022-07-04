@@ -1,25 +1,44 @@
+"""
+
+Requerimiento:
+Cree el archivo data_lake/business/features/precios-diarios.csv. Este
+archivo contiene la información para pronosticar los precios diarios de la
+electricidad con base en los precios de los días pasados. Las columnas
+correspoden a las variables explicativas del modelo, y debe incluir,
+adicionalmente, la fecha del precio que se desea pronosticar y el precio
+que se desea pronosticar (variable dependiente).
+
+En la carpeta notebooks/ cree los notebooks de jupyter necesarios para
+analizar y determinar las variables explicativas del modelo.
+
+"""
+import os
 def make_features():
+    """Prepara datos para pronóstico.
+
+    Cree el archivo data_lake/business/features/precios-diarios.csv. Este
+    archivo contiene la información para pronosticar los precios diarios de la
+    electricidad con base en los precios de los días pasados. Las columnas
+    correspoden a las variables explicativas del modelo, y debe incluir,
+    adicionalmente, la fecha del precio que se desea pronosticar y el precio
+    que se desea pronosticar (variable dependiente).
+
+    En la carpeta notebooks/ cree los notebooks de jupyter necesarios para
+    analizar y determinar las variables explicativas del modelo.
+
+    """
+    #raise NotImplementedError("Implementar esta función")
     import pandas as pd
-    import numpy as np
+
+    datos = pd.read_csv('data_lake/business/precios-diarios.csv', index_col=None, header=0)
+    datos['Fecha'] = pd.to_datetime(datos['Fecha'], format='%Y-%m-%d')
+    datos.to_csv('data_lake/business/features/precios_diarios.csv', index=None)
     
-    df_daily = pd.read_csv('data_lake/business/precios-diarios.csv')
-    df_daily['log_precio'] = np.log(df_daily['precio'])
-    df_daily['precio_log_12'] = df_daily.precio.shift(12)
-    df_daily['log_precio_log_12'] = np.log(df_daily['precio_log_12'])
-    df_daily.to_csv('data_lake/business/features/precios-diarios.csv', index=False)
-
-import pytest
-def test_make_features():
-    import pandas as pd
-
-    make_features()
-
-    df_to_test = pd.read_csv('data_lake/business/features/precios-diarios.csv')
-
-    assert df_to_test.empty is False
-
+ def test_11():
+    assert os.path.isfile('data_lake/business/features/precios-diarios.csv') is True
 
 if __name__ == "__main__":
     import doctest
-    make_features()
+
     doctest.testmod()
+    make_features()
