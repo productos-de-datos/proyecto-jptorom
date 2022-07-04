@@ -3,9 +3,9 @@ def make_features():
     import numpy as np
     
     df_daily = pd.read_csv('data_lake/business/precios-diarios.csv')
-    df_daily['log_precio'] = np.log(df_daily_prices['precio'])
-    df_daily['precio_log_12'] = df_daily_prices.precio.shift(12)
-    df_daily['log_precio_log_12'] = np.log(df_daily_prices['precio_log_12'])
+    df_daily['log_precio'] = np.log(df_daily['precio'])
+    df_daily['precio_log_12'] = df_daily.precio.shift(12)
+    df_daily['log_precio_log_12'] = np.log(df_daily['precio_log_12'])
     df_daily.to_csv('data_lake/business/features/precios-diarios.csv', index=False)
 
 import pytest
